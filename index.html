@@ -23,12 +23,9 @@
 <body>
     <div id="app" v-cloak>
         <button @click="toggleBox">Show box</button>
-        <login-form />
         <hr />
-        <div v-if="isVisiable" class="box" ></div>
-
-        
-        
+        <div v-if="isVisiable" class="box" ></div> 
+        <login-form />
     </div>
 
     <script src="https://unpkg.com/vue@next"></script>
