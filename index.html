@@ -22,12 +22,13 @@
 </head>
 <body>
     <div id="app" v-cloak>
-        <login-form />
-
-        <hr />
-
         <button @click="toggleBox">Show box</button>
+        <login-form />
+        <hr />
         <div v-if="isVisiable" class="box" ></div>
+
+        
+        
     </div>
 
     <script src="https://unpkg.com/vue@next"></script>
@@ -36,7 +37,7 @@
             data() {
                 return {
                     greeting: 'Hello Vue 3!',
-                    isVisiable: false,
+                    isVisiable: true,
                 }
             },
             methods: {
@@ -49,13 +50,18 @@
             },
         })
 
+        
         app.component('login-form',{
             template: `
                 <from>
                     <h1>{{ title }}</h1>
-                    <p v-for="(str, i) in inputs" :key="i" >{{str}}</p>
-                    <custom-input :type="emailtype" v-model="email" :lable="emailLable"/>
-                    <custom-input :type="passwordtype" v-model="password" v-bind:lable="passwordLable"/>
+                    <custom-input
+                    v-for="(input, i) in inputs" 
+                    :key="i"
+                    :type="input.type" 
+                    v-model="input.value" 
+                    :lable="input.label"
+                    />
                     <button @click.prevent="handleSubmit">log in</button> 
                 </from>
             `,
@@ -64,9 +70,16 @@
                 return {
                     title: 'Login From',
                     inputs: [
-                        'email',
-                        'password',
-                        'name',
+                        {
+                            label: 'Email',
+                            value: '',
+                            type: 'email'
+                        },
+                        {
+                            label: 'Password',
+                            value: '',
+                            type: 'password'
+                        },
                     ],
                     emailtype: 'email',
                     email: '',
@@ -78,7 +91,7 @@
             },
             methods: {
                 handleSubmit() {
-                    console.log('submitted', this.email, this.password)
+                    console.log(this.inputs[0].value, this.inputs[1].value)
                 }
             }
         })
