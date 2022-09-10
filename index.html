@@ -14,12 +14,15 @@
         [v-cloak] {
             display: none;
         }
+        input {
+            margin: 10px;
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div id="app" v-cloak>
-        {{greeting}}
-        <input @keyup.enter="greet(greeting + '!!!!!!!')" v-model="greeting" />
+        <login-form />
 
         <hr />
 
@@ -44,6 +47,59 @@
                     console.log(greeting)
                 }
             },
+        })
+
+        app.component('login-form',{
+            template: `
+                <from>
+                    <h1>{{ title }}</h1>
+                    <p v-for="(str, i) in inputs" :key="i" >{{str}}</p>
+                    <custom-input :type="emailtype" v-model="email" :lable="emailLable"/>
+                    <custom-input :type="passwordtype" v-model="password" v-bind:lable="passwordLable"/>
+                    <button @click.prevent="handleSubmit">log in</button> 
+                </from>
+            `,
+            components: ['custom-input'],
+            data() {
+                return {
+                    title: 'Login From',
+                    inputs: [
+                        'email',
+                        'password',
+                        'name',
+                    ],
+                    emailtype: 'email',
+                    email: '',
+                    passwordtype: 'password',
+                    password: '',
+                    emailLable: 'Email',
+                    passwordLable: 'Password',
+                }
+            },
+            methods: {
+                handleSubmit() {
+                    console.log('submitted', this.email, this.password)
+                }
+            }
+        })
+        app.component('custom-input', {
+            template: `
+                <lable>
+                    {{lable}}
+                    <input :type = "type" v-model="inputValue" />
+                </lable>
+            `,
+            props: ['lable', 'type', 'modelValue'],
+            computed: {
+                inputValue: {
+                    get() {
+                        return this.modelValue;
+                    },
+                    set(value) {
+                        this.$emit('update:modelValue', value);
+                    }
+                }
+            }
         })
         app.mount('#app')
     </script>
