@@ -19,10 +19,11 @@
 <body>
     <div id="app" v-cloak>
         {{greeting}}
-        <input v-model="greeting" />
+        <input @keyup.enter="greet(greeting + '!!!!!!!')" v-model="greeting" />
 
         <hr />
 
+        <button @click="toggleBox">Show box</button>
         <div v-if="isVisiable" class="box" ></div>
     </div>
 
@@ -34,7 +35,15 @@
                     greeting: 'Hello Vue 3!',
                     isVisiable: false,
                 }
-            }
+            },
+            methods: {
+                toggleBox() {
+                    this.isVisiable = !this.isVisiable
+                },
+                greet(greeting) {
+                    console.log(greeting)
+                }
+            },
         })
         app.mount('#app')
     </script>
